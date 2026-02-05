@@ -1,6 +1,5 @@
-// Gemini API 설정
-const GEMINI_API_KEY = 'AIzaSyCb-DnIZDb7q6JFklQvQkihbfW7DR9MZVA';
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+// Cloudflare Pages Function 프록시 경로
+const PROXY_URL = '/api/gemini';
 
 // DOM 요소
 const dreamInput = document.getElementById('dream-input');
@@ -87,7 +86,7 @@ async function getInterpretation(dreamText, type) {
 친근하고 이해하기 쉽게 설명해주세요.`
   };
 
-  const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+  const response = await fetch(PROXY_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
