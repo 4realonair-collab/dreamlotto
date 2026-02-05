@@ -1,0 +1,17 @@
+# Dream645 꿈해몽 로또 - robots.txt
+# https://dream645.co
+
+# 모든 검색 엔진 로봇 허용
+User-agent: *
+Allow: /
+
+# 보안상 노출 불필요한 경로 제외
+Disallow: /functions/
+Disallow: /.git/
+Disallow: /.claude/
+Disallow: /.vscode/
+Disallow: /.idx/
+Disallow: /firebase-debug.log
+
+# 사이트맵 위치
+Sitemap: https://dream645.co/sitemap.xml
