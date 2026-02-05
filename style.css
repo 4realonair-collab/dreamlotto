@@ -16,6 +16,9 @@
   --border: #30363d;
   --gradient-start: #6366f1;
   --gradient-end: #8b5cf6;
+  --gold-start: #fbbf24;
+  --gold-end: #f59e0b;
+  --gold-dark: #d97706;
 }
 
 body {
@@ -52,6 +55,7 @@ header h1 {
   font-size: 1.1rem;
 }
 
+/* 입력 섹션 */
 .input-section {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -122,6 +126,7 @@ textarea:focus {
   transform: none;
 }
 
+/* 해몽 결과 섹션 */
 .result-section {
   margin-top: 32px;
 }
@@ -130,80 +135,213 @@ textarea:focus {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 24px;
+  padding: 28px;
   margin-bottom: 20px;
 }
 
 .result-card h2 {
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 600;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--border);
   color: var(--accent);
 }
 
 .result-content {
-  font-size: 1rem;
-  line-height: 1.8;
+  font-size: 1.05rem;
+  line-height: 2;
   color: var(--text-primary);
-  white-space: pre-wrap;
+  letter-spacing: 0.01em;
 }
 
-.lotto-btn {
+.result-content p {
+  margin-bottom: 16px;
+}
+
+.result-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* 로또 CTA 버튼 */
+.lotto-cta-btn {
   width: 100%;
-  padding: 20px 32px;
-  margin-top: 24px;
-  font-size: 1.2rem;
-  font-weight: 700;
+  padding: 24px 32px;
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   font-family: inherit;
-  color: var(--bg-primary);
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #1a1a1a;
+  background: linear-gradient(135deg, var(--gold-start), var(--gold-end));
   border: none;
-  border-radius: 16px;
+  border-radius: 20px;
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
-  animation: pulse 2s infinite;
+  animation: goldPulse 2s infinite;
+  position: relative;
+  overflow: hidden;
 }
 
-@keyframes pulse {
+.lotto-cta-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+@keyframes goldPulse {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4);
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.5);
   }
   50% {
     box-shadow: 0 0 0 15px rgba(251, 191, 36, 0);
   }
 }
 
-.lotto-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 30px rgba(251, 191, 36, 0.5);
+.lotto-cta-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 35px rgba(251, 191, 36, 0.5);
   animation: none;
 }
 
-.lotto-btn:disabled {
-  opacity: 0.6;
+.lotto-cta-btn:disabled {
+  opacity: 0.7;
   cursor: not-allowed;
   transform: none;
   animation: none;
 }
 
-.lotto-section {
-  margin-top: 24px;
+.btn-icon {
+  font-size: 2rem;
 }
 
-.lotto-loading {
-  text-align: center;
-  padding: 40px;
+.btn-text {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.btn-sub {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.bonus-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.bonus-btn::before {
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+}
+
+@keyframes redPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+  }
+}
+
+.bonus-btn {
+  animation: redPulse 2s infinite;
+}
+
+.bonus-btn:hover {
+  box-shadow: 0 12px 35px rgba(239, 68, 68, 0.5);
+}
+
+/* 광고 섹션 */
+.ad-section {
+  margin-top: 28px;
   background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  border: 2px solid var(--gold-start);
+  border-radius: 20px;
+  padding: 40px;
 }
 
-.lotto-loading p {
-  margin-top: 16px;
+.ad-content {
+  text-align: center;
+}
+
+.ad-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.ad-text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--gold-start);
+  margin-bottom: 20px;
+}
+
+.ad-progress-bar {
+  width: 100%;
+  height: 12px;
+  background: var(--bg-tertiary);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.ad-progress {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-start), var(--gold-end));
+  border-radius: 6px;
+  transition: width 0.06s linear;
+  box-shadow: 0 0 10px var(--gold-start);
+}
+
+.ad-subtext {
+  font-size: 0.9rem;
   color: var(--text-secondary);
-  font-size: 1.1rem;
+}
+
+/* 로또 섹션 */
+.lotto-section {
+  margin-top: 28px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .lotto-result {
@@ -211,77 +349,95 @@ textarea:focus {
   padding: 32px;
   background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
   border: 1px solid var(--gradient-start);
-  border-radius: 16px;
+  border-radius: 20px;
+}
+
+.bonus-result {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+  border-color: #ef4444;
 }
 
 .lotto-result h3 {
-  font-size: 1.3rem;
-  margin-bottom: 20px;
+  font-size: 1.4rem;
+  margin-bottom: 24px;
   color: var(--accent);
+}
+
+.bonus-result h3 {
+  color: #ef4444;
 }
 
 .lotto-numbers {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
 .lotto-set {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 16px;
+  padding: 16px 20px;
   background: var(--bg-tertiary);
-  border-radius: 12px;
+  border-radius: 16px;
+  animation: fadeInUp 0.5s ease-out both;
 }
 
 .set-label {
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   color: var(--text-secondary);
-  min-width: 50px;
+  min-width: 55px;
 }
 
 .lotto-balls {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
+/* 로또 공 스타일 - 실제 로또 공처럼 */
 .lotto-ball {
-  width: 56px;
-  height: 56px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: white;
-  animation: bounceIn 0.5s ease-out forwards;
-  opacity: 0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  animation: ballBounce 0.5s ease-out both;
+  position: relative;
+  box-shadow:
+    inset -3px -3px 8px rgba(0,0,0,0.3),
+    inset 3px 3px 8px rgba(255,255,255,0.2),
+    0 4px 12px rgba(0,0,0,0.3);
 }
 
-.lotto-balls .lotto-ball:nth-child(1) { animation-delay: 0.1s; }
-.lotto-balls .lotto-ball:nth-child(2) { animation-delay: 0.15s; }
-.lotto-balls .lotto-ball:nth-child(3) { animation-delay: 0.2s; }
-.lotto-balls .lotto-ball:nth-child(4) { animation-delay: 0.25s; }
-.lotto-balls .lotto-ball:nth-child(5) { animation-delay: 0.3s; }
-.lotto-balls .lotto-ball:nth-child(6) { animation-delay: 0.35s; }
+.lotto-ball::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 12px;
+  width: 12px;
+  height: 8px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 50%;
+  transform: rotate(-30deg);
+}
 
-.lotto-set:nth-child(1) .lotto-ball { animation-delay: 0s; }
-.lotto-set:nth-child(2) .lotto-ball { animation-delay: 0.1s; }
-.lotto-set:nth-child(3) .lotto-ball { animation-delay: 0.2s; }
-.lotto-set:nth-child(4) .lotto-ball { animation-delay: 0.3s; }
-.lotto-set:nth-child(5) .lotto-ball { animation-delay: 0.4s; }
-
-@keyframes bounceIn {
+@keyframes ballBounce {
   0% {
     opacity: 0;
-    transform: scale(0.3);
+    transform: scale(0) translateY(-50px);
   }
-  50% {
-    transform: scale(1.1);
+  60% {
+    transform: scale(1.2) translateY(0);
+  }
+  80% {
+    transform: scale(0.9);
   }
   100% {
     opacity: 1;
@@ -289,12 +445,24 @@ textarea:focus {
   }
 }
 
-.ball-yellow { background: linear-gradient(135deg, #fbbf24, #f59e0b); }
-.ball-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-.ball-red { background: linear-gradient(135deg, #ef4444, #dc2626); }
-.ball-gray { background: linear-gradient(135deg, #6b7280, #4b5563); }
-.ball-green { background: linear-gradient(135deg, #10b981, #059669); }
+/* 번호별 색상 - 실제 로또 색상 */
+.ball-yellow {
+  background: linear-gradient(145deg, #fcd34d, #f59e0b);
+}
+.ball-blue {
+  background: linear-gradient(145deg, #60a5fa, #2563eb);
+}
+.ball-red {
+  background: linear-gradient(145deg, #f87171, #dc2626);
+}
+.ball-gray {
+  background: linear-gradient(145deg, #9ca3af, #4b5563);
+}
+.ball-green {
+  background: linear-gradient(145deg, #34d399, #059669);
+}
 
+/* 로딩 */
 .loading {
   text-align: center;
   padding: 40px;
@@ -327,6 +495,7 @@ textarea:focus {
   display: none !important;
 }
 
+/* 푸터 */
 footer {
   margin-top: 60px;
   text-align: center;
@@ -339,6 +508,7 @@ footer p {
   color: var(--text-secondary);
 }
 
+/* 반응형 */
 @media (max-width: 600px) {
   .container {
     padding: 24px 16px;
@@ -348,26 +518,46 @@ footer p {
     font-size: 2rem;
   }
 
+  .result-card {
+    padding: 20px;
+  }
+
+  .result-content {
+    font-size: 1rem;
+    line-height: 1.9;
+  }
+
+  .lotto-cta-btn {
+    padding: 20px 24px;
+  }
+
+  .btn-text {
+    font-size: 1.1rem;
+  }
+
   .lotto-ball {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     font-size: 1rem;
   }
 
   .lotto-set {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
   }
 
   .set-label {
     width: 100%;
-    text-align: center;
-    margin-bottom: 8px;
+    text-align: left;
   }
 
   .lotto-balls {
-    gap: 6px;
+    width: 100%;
     justify-content: center;
+  }
+
+  .ad-section {
+    padding: 30px 20px;
   }
 }

@@ -1,16 +1,60 @@
 // Cloudflare Pages Function 프록시 경로
 const PROXY_URL = '/api/gemini';
 
+// 상태 변수
+let isInterpreted = false;
+let firstAdCompleted = false;
+let secondAdCompleted = false;
+let lottoSets = []; // AI가 생성한 로또 5세트 저장
+
 // DOM 요소
 const dreamInput = document.getElementById('dream-input');
 const interpretBtn = document.getElementById('interpret-btn');
 const resultSection = document.getElementById('result-section');
 const easternResult = document.getElementById('eastern-result');
 const westernResult = document.getElementById('western-result');
-const lottoSection = document.getElementById('lotto-section');
-const lottoResult = document.getElementById('lotto-result');
-const lottoNumbers = document.getElementById('lotto-numbers');
+const firstLottoBtn = document.getElementById('first-lotto-btn');
+const adSection = document.getElementById('ad-section');
+const adProgress = document.getElementById('ad-progress');
+const firstLottoSection = document.getElementById('first-lotto-section');
+const firstLottoNumbers = document.getElementById('first-lotto-numbers');
+const secondLottoBtn = document.getElementById('second-lotto-btn');
+const secondLottoSection = document.getElementById('second-lotto-section');
+const secondLottoNumbers = document.getElementById('second-lotto-numbers');
 const loading = document.getElementById('loading');
+
+// ============================================
+// 광고 Mock 함수
+// 나중에 실제 Google AdSense 코드로 교체하세요
+// ============================================
+function showAd(callback) {
+  // 광고 섹션 표시
+  adSection.classList.remove('hidden');
+  adProgress.style.width = '0%';
+
+  // 3초 동안 프로그레스 바 애니메이션
+  let progress = 0;
+  const interval = setInterval(() => {
+    progress += 2;
+    adProgress.style.width = `${progress}%`;
+
+    if (progress >= 100) {
+      clearInterval(interval);
+      adSection.classList.add('hidden');
+
+      // ============================================
+      // TODO: 여기에 실제 AdSense 광고 코드 삽입
+      // 예시:
+      // if (typeof adsbygoogle !== 'undefined') {
+      //   (adsbygoogle = window.adsbygoogle || []).push({});
+      // }
+      // ============================================
+
+      // 콜백 실행 (다음 단계로 진행)
+      if (callback) callback();
+    }
+  }, 60); // 3초 = 3000ms / 50 steps = 60ms per step
+}
 
 // 해몽하기 버튼 클릭
 interpretBtn.addEventListener('click', async () => {
@@ -26,20 +70,33 @@ interpretBtn.addEventListener('click', async () => {
     return;
   }
 
-  // UI 상태 변경
+  // 상태 초기화
+  isInterpreted = false;
+  firstAdCompleted = false;
+  secondAdCompleted = false;
+  lottoSets = [];
+
+  // UI 초기화
   interpretBtn.disabled = true;
   loading.classList.remove('hidden');
   resultSection.classList.add('hidden');
+  firstLottoBtn.classList.add('hidden');
+  firstLottoSection.classList.add('hidden');
+  secondLottoBtn.classList.add('hidden');
+  secondLottoSection.classList.add('hidden');
 
   try {
     const result = await getDreamInterpretation(dreamText);
 
-    // 결과 파싱 및 표시
-    displayResults(result);
+    // 결과 파싱
+    parseResults(result);
 
+    // 1단계: 해몽 결과만 표시
     resultSection.classList.remove('hidden');
-    lottoSection.classList.remove('hidden');
-    lottoResult.classList.remove('hidden');
+    isInterpreted = true;
+
+    // 2단계: 첫 번째 로또 버튼 표시
+    firstLottoBtn.classList.remove('hidden');
 
   } catch (error) {
     console.error('해몽 오류:', error);
@@ -48,6 +105,39 @@ interpretBtn.addEventListener('click', async () => {
     interpretBtn.disabled = false;
     loading.classList.add('hidden');
   }
+});
+
+// 첫 번째 로또 버튼 클릭 (3세트 받기)
+firstLottoBtn.addEventListener('click', () => {
+  if (!isInterpreted) return;
+
+  firstLottoBtn.disabled = true;
+
+  // 3단계: 광고 시뮬레이션 후 3세트 공개
+  showAd(() => {
+    firstAdCompleted = true;
+    displayLottoSets(firstLottoNumbers, lottoSets.slice(0, 3));
+    firstLottoSection.classList.remove('hidden');
+    firstLottoBtn.classList.add('hidden');
+
+    // 4단계: 두 번째 로또 버튼 표시
+    secondLottoBtn.classList.remove('hidden');
+  });
+});
+
+// 두 번째 로또 버튼 클릭 (추가 2세트 받기)
+secondLottoBtn.addEventListener('click', () => {
+  if (!firstAdCompleted) return;
+
+  secondLottoBtn.disabled = true;
+
+  // 5단계: 광고 시뮬레이션 후 나머지 2세트 공개
+  showAd(() => {
+    secondAdCompleted = true;
+    displayLottoSets(secondLottoNumbers, lottoSets.slice(3, 5));
+    secondLottoSection.classList.remove('hidden');
+    secondLottoBtn.classList.add('hidden');
+  });
 });
 
 // Gemini API로 해몽 및 로또 번호 요청
@@ -102,8 +192,8 @@ async function getDreamInterpretation(dreamText) {
   throw new Error('응답 파싱 실패');
 }
 
-// 결과 파싱 및 표시
-function displayResults(text) {
+// 결과 파싱
+function parseResults(text) {
   // 동양적 관점 추출
   const easternMatch = text.match(/\[동양적 관점\]\s*([\s\S]*?)(?=\[서양적 관점\])/);
   const easternText = easternMatch ? easternMatch[1].trim() : '해석을 불러올 수 없습니다.';
@@ -117,14 +207,55 @@ function displayResults(text) {
   const lottoText = lottoMatch ? lottoMatch[1].trim() : '';
 
   // 해몽 결과 표시
-  easternResult.textContent = easternText;
-  westernResult.textContent = westernText;
+  easternResult.innerHTML = formatInterpretation(easternText);
+  westernResult.innerHTML = formatInterpretation(westernText);
 
-  // 로또 번호 파싱 및 표시
-  displayLottoNumbers(lottoText);
+  // 로또 번호 파싱 및 저장
+  parseLottoNumbers(lottoText);
 }
 
-// 번호에 따른 공 색상 결정
+// 해몽 텍스트 포맷팅
+function formatInterpretation(text) {
+  return text
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br>')
+    .replace(/^/, '<p>')
+    .replace(/$/, '</p>');
+}
+
+// 로또 번호 파싱
+function parseLottoNumbers(lottoText) {
+  lottoSets = [];
+  const setMatches = lottoText.matchAll(/(\d)세트[:\s]*([\d,\s]+)/g);
+
+  for (const match of setMatches) {
+    const numbersStr = match[2];
+    const numbers = numbersStr.match(/\d+/g)?.map(n => parseInt(n, 10)).slice(0, 6) || [];
+
+    if (numbers.length === 6) {
+      lottoSets.push(numbers.sort((a, b) => a - b));
+    }
+  }
+
+  // 5세트가 안 되면 랜덤으로 채우기
+  while (lottoSets.length < 5) {
+    lottoSets.push(generateRandomLottoSet());
+  }
+}
+
+// 랜덤 로또 번호 생성 (백업용)
+function generateRandomLottoSet() {
+  const numbers = [];
+  while (numbers.length < 6) {
+    const num = Math.floor(Math.random() * 45) + 1;
+    if (!numbers.includes(num)) {
+      numbers.push(num);
+    }
+  }
+  return numbers.sort((a, b) => a - b);
+}
+
+// 번호에 따른 공 색상 결정 (실제 로또 공 색상)
 function getBallColor(num) {
   if (num <= 10) return 'ball-yellow';
   if (num <= 20) return 'ball-blue';
@@ -133,39 +264,32 @@ function getBallColor(num) {
   return 'ball-green';
 }
 
-// 로또 번호 표시 (5세트)
-function displayLottoNumbers(lottoText) {
-  lottoNumbers.innerHTML = '';
+// 로또 세트 표시
+function displayLottoSets(container, sets) {
+  container.innerHTML = '';
 
-  // 각 세트별로 번호 추출
-  const setMatches = lottoText.matchAll(/(\d)세트[:\s]*([\d,\s]+)/g);
+  sets.forEach((numbers, index) => {
+    const setDiv = document.createElement('div');
+    setDiv.className = 'lotto-set';
+    setDiv.style.animationDelay = `${index * 0.2}s`;
 
-  for (const match of setMatches) {
-    const setNumber = match[1];
-    const numbersStr = match[2];
-    const numbers = numbersStr.match(/\d+/g)?.map(n => parseInt(n, 10)).slice(0, 6) || [];
+    const setLabel = document.createElement('span');
+    setLabel.className = 'set-label';
+    setLabel.textContent = `${lottoSets.indexOf(numbers) + 1}세트`;
+    setDiv.appendChild(setLabel);
 
-    if (numbers.length === 6) {
-      const setDiv = document.createElement('div');
-      setDiv.className = 'lotto-set';
+    const ballsDiv = document.createElement('div');
+    ballsDiv.className = 'lotto-balls';
 
-      const setLabel = document.createElement('span');
-      setLabel.className = 'set-label';
-      setLabel.textContent = `${setNumber}세트`;
-      setDiv.appendChild(setLabel);
+    numbers.forEach((num, ballIndex) => {
+      const ball = document.createElement('div');
+      ball.className = `lotto-ball ${getBallColor(num)}`;
+      ball.textContent = num;
+      ball.style.animationDelay = `${index * 0.2 + ballIndex * 0.1}s`;
+      ballsDiv.appendChild(ball);
+    });
 
-      const ballsDiv = document.createElement('div');
-      ballsDiv.className = 'lotto-balls';
-
-      numbers.sort((a, b) => a - b).forEach(num => {
-        const ball = document.createElement('div');
-        ball.className = `lotto-ball ${getBallColor(num)}`;
-        ball.textContent = num;
-        ballsDiv.appendChild(ball);
-      });
-
-      setDiv.appendChild(ballsDiv);
-      lottoNumbers.appendChild(setDiv);
-    }
-  }
+    setDiv.appendChild(ballsDiv);
+    container.appendChild(setDiv);
+  });
 }

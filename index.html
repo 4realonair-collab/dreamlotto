@@ -21,6 +21,13 @@
         <button id="interpret-btn" class="primary-btn">해몽하기</button>
       </section>
 
+      <!-- 로딩 -->
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>꿈을 해석하고 있습니다...</p>
+      </div>
+
+      <!-- 1단계: 해몽 결과 -->
       <section id="result-section" class="result-section hidden">
         <div class="result-card">
           <h2>동양 해몽</h2>
@@ -30,19 +37,49 @@
           <h2>서양 해몽</h2>
           <div id="western-result" class="result-content"></div>
         </div>
+      </section>
 
-        <div id="lotto-section" class="lotto-section hidden">
-          <div id="lotto-result" class="lotto-result hidden">
-            <h3>꿈의 기운으로 본 행운의 번호</h3>
-            <div id="lotto-numbers" class="lotto-numbers"></div>
+      <!-- 2단계: 첫 번째 로또 버튼 -->
+      <button id="first-lotto-btn" class="lotto-cta-btn hidden">
+        <span class="btn-icon">🍀</span>
+        <span class="btn-text">꿈의 기운으로 로또 번호 3세트 받기</span>
+        <span class="btn-sub">무료 광고 시청</span>
+      </button>
+
+      <!-- 광고 시뮬레이션 -->
+      <div id="ad-section" class="ad-section hidden">
+        <div class="ad-content">
+          <div class="ad-icon">📺</div>
+          <p class="ad-text">광고 시청 중...</p>
+          <div class="ad-progress-bar">
+            <div id="ad-progress" class="ad-progress"></div>
           </div>
+          <p class="ad-subtext">잠시만 기다려주세요</p>
+        </div>
+      </div>
+
+      <!-- 3단계: 첫 번째 로또 결과 (3세트) -->
+      <section id="first-lotto-section" class="lotto-section hidden">
+        <div class="lotto-result">
+          <h3>꿈의 기운으로 본 행운의 번호</h3>
+          <div id="first-lotto-numbers" class="lotto-numbers"></div>
         </div>
       </section>
 
-      <div id="loading" class="loading hidden">
-        <div class="spinner"></div>
-        <p>꿈을 해석하고 있습니다...</p>
-      </div>
+      <!-- 4단계: 두 번째 로또 버튼 -->
+      <button id="second-lotto-btn" class="lotto-cta-btn bonus-btn hidden">
+        <span class="btn-icon">🎯</span>
+        <span class="btn-text">당첨 확률 높이기: 추가 2세트 더 받기</span>
+        <span class="btn-sub">무료 광고 시청</span>
+      </button>
+
+      <!-- 5단계: 두 번째 로또 결과 (2세트) -->
+      <section id="second-lotto-section" class="lotto-section hidden">
+        <div class="lotto-result bonus-result">
+          <h3>보너스 행운 번호</h3>
+          <div id="second-lotto-numbers" class="lotto-numbers"></div>
+        </div>
+      </section>
     </main>
 
     <footer>
