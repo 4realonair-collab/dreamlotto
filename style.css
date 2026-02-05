@@ -495,6 +495,235 @@ textarea:focus {
   display: none !important;
 }
 
+/* 자주 찾는 꿈 해몽 섹션 */
+.popular-dreams {
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.popular-dreams h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.section-desc {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.dream-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.dream-card {
+  display: block;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  text-decoration: none;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.dream-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 8px 25px rgba(88, 166, 255, 0.15);
+}
+
+.dream-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.dream-card p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.dream-card .read-more {
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* 로고 링크 */
+.logo-link {
+  text-decoration: none;
+}
+
+.logo-link h1 {
+  transition: opacity 0.2s;
+}
+
+.logo-link:hover h1 {
+  opacity: 0.8;
+}
+
+/* 뒤로가기 링크 */
+.back-link {
+  display: inline-block;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: var(--accent-hover);
+}
+
+/* 꿈 해몽 상세 페이지 */
+.dream-article {
+  margin-bottom: 40px;
+}
+
+.dream-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.dream-summary {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+.dream-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.dream-tag {
+  background: var(--bg-tertiary);
+  color: var(--accent);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.interpretation-section {
+  margin-bottom: 40px;
+}
+
+/* 꿈 해몽 CTA */
+.dream-cta {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15));
+  border: 1px solid var(--gradient-start);
+  border-radius: 20px;
+  padding: 32px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.dream-cta h3 {
+  font-size: 1.4rem;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.dream-cta p {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.cta-link {
+  display: inline-block;
+  width: auto;
+  padding: 14px 32px;
+  text-decoration: none;
+}
+
+/* 관련 꿈 해몽 */
+.related-dreams {
+  margin-top: 40px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.related-dreams h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: var(--text-primary);
+}
+
+/* 법적 콘텐츠 페이지 */
+.legal-content {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 40px;
+}
+
+.legal-content h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.legal-content .last-updated {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 32px;
+}
+
+.legal-content section {
+  margin-bottom: 32px;
+}
+
+.legal-content section:last-child {
+  margin-bottom: 0;
+}
+
+.legal-content h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.legal-content p {
+  color: var(--text-primary);
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.legal-content ul {
+  list-style: disc;
+  margin-left: 24px;
+  margin-bottom: 12px;
+}
+
+.legal-content li {
+  color: var(--text-primary);
+  line-height: 1.8;
+  margin-bottom: 8px;
+}
+
+.legal-content li strong {
+  color: var(--text-primary);
+}
+
 /* 푸터 */
 footer {
   margin-top: 60px;
@@ -503,9 +732,36 @@ footer {
   border-top: 1px solid var(--border);
 }
 
+.footer-links {
+  margin-bottom: 16px;
+}
+
+.footer-links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover,
+.footer-links a.active {
+  color: var(--accent);
+}
+
+.footer-links .divider {
+  color: var(--border);
+  margin: 0 12px;
+}
+
 footer p {
   font-size: 0.85rem;
   color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.copyright {
+  margin-top: 12px;
+  font-size: 0.8rem;
 }
 
 /* 반응형 */
@@ -559,5 +815,25 @@ footer p {
 
   .ad-section {
     padding: 30px 20px;
+  }
+
+  .dream-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dream-title {
+    font-size: 1.6rem;
+  }
+
+  .legal-content {
+    padding: 24px;
+  }
+
+  .legal-content h1 {
+    font-size: 1.6rem;
+  }
+
+  .dream-cta {
+    padding: 24px;
   }
 }

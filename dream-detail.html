@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="page-title">꿈 해몽 - 꿈해몽 로또</title>
+  <meta name="description" id="meta-description" content="꿈 해몽 상세 정보">
+  <meta name="keywords" id="meta-keywords" content="꿈해몽, 해몽, 꿈풀이">
+  <link href='/style.css' rel='stylesheet'>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" id="og-title" content="꿈 해몽">
+  <meta property="og:description" id="og-description" content="꿈 해몽 상세 정보">
+  <meta property="og:site_name" content="꿈해몽 로또">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <a href="/" class="logo-link">
+        <h1>꿈해몽 로또</h1>
+      </a>
+      <p class="subtitle">꿈을 해석하고 행운의 번호를 받아보세요</p>
+    </header>
+
+    <main>
+      <!-- 뒤로가기 -->
+      <a href="/" class="back-link">← 메인으로 돌아가기</a>
+
+      <!-- 꿈 해몽 상세 -->
+      <article id="dream-article" class="dream-article">
+        <h1 id="dream-title" class="dream-title">로딩 중...</h1>
+        <p id="dream-summary" class="dream-summary"></p>
+
+        <div class="dream-tags" id="dream-tags"></div>
+
+        <section class="interpretation-section">
+          <div class="result-card">
+            <h2 id="eastern-title">동양 해몽</h2>
+            <div id="eastern-content" class="result-content"></div>
+          </div>
+
+          <div class="result-card">
+            <h2 id="western-title">서양 해몽</h2>
+            <div id="western-content" class="result-content"></div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <div class="dream-cta">
+          <h3>나만의 꿈을 해몽받고 싶다면?</h3>
+          <p>AI가 당신의 꿈을 분석하고 행운의 로또 번호까지 알려드립니다.</p>
+          <a href="/" class="primary-btn cta-link">무료로 꿈 해몽받기</a>
+        </div>
+      </article>
+
+      <!-- 관련 꿈 해몽 -->
+      <section class="related-dreams">
+        <h2>다른 인기 꿈 해몽</h2>
+        <div id="related-list" class="dream-grid"></div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-links">
+        <a href="/terms.html">이용약관</a>
+        <span class="divider">|</span>
+        <a href="/privacy.html">개인정보 처리방침</a>
+      </div>
+      <p>본 서비스는 재미를 위한 것이며, 실제 점술이나 도박을 권장하지 않습니다.</p>
+      <p class="copyright">© 2024 꿈해몽 로또. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script src="/data/dreams.js"></script>
+  <script>
+    // URL에서 slug 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const slug = urlParams.get('id');
+
+    // 해당 꿈 데이터 찾기
+    const dream = DREAM_DATA.find(d => d.slug === slug);
+
+    if (dream) {
+      // 페이지 제목 및 메타 태그 설정
+      document.getElementById('page-title').textContent = `${dream.title} 해몽 - 꿈해몽 로또`;
+      document.getElementById('meta-description').content = dream.summary;
+      document.getElementById('meta-keywords').content = dream.keywords.join(', ') + ', 꿈해몽, 해몽, 꿈풀이';
+      document.getElementById('og-title').content = `${dream.title} 해몽`;
+      document.getElementById('og-description').content = dream.summary;
+
+      // 콘텐츠 표시
+      document.getElementById('dream-title').textContent = dream.title + ' 해몽';
+      document.getElementById('dream-summary').textContent = dream.summary;
+
+      // 키워드 태그
+      const tagsContainer = document.getElementById('dream-tags');
+      dream.keywords.forEach(keyword => {
+        const tag = document.createElement('span');
+        tag.className = 'dream-tag';
+        tag.textContent = '#' + keyword;
+        tagsContainer.appendChild(tag);
+      });
+
+      // 동양 해몽
+      document.getElementById('eastern-content').innerHTML = formatContent(dream.eastern.content);
+
+      // 서양 해몽
+      document.getElementById('western-content').innerHTML = formatContent(dream.western.content);
+
+      // 관련 꿈 (현재 꿈 제외하고 4개)
+      const relatedDreams = DREAM_DATA.filter(d => d.id !== dream.id).slice(0, 4);
+      const relatedList = document.getElementById('related-list');
+      relatedDreams.forEach(d => {
+        const card = document.createElement('a');
+        card.href = `/dream-detail.html?id=${d.slug}`;
+        card.className = 'dream-card';
+        card.innerHTML = `
+          <h3>${d.title}</h3>
+          <p>${d.summary}</p>
+        `;
+        relatedList.appendChild(card);
+      });
+    } else {
+      // 꿈을 찾을 수 없는 경우
+      document.getElementById('dream-article').innerHTML = `
+        <h1 class="dream-title">꿈을 찾을 수 없습니다</h1>
+        <p>요청하신 꿈 해몽 정보를 찾을 수 없습니다.</p>
+        <a href="/" class="primary-btn cta-link">메인으로 돌아가기</a>
+      `;
+    }
+
+    function formatContent(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n- /g, '</p><li>')
+        .replace(/\n/g, '<br>')
+        .replace(/^/, '<p>')
+        .replace(/$/, '</p>')
+        .replace(/<p><\/p>/g, '');
+    }
+  </script>
+</body>
+</html>
