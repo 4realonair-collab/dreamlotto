@@ -1,5 +1,6 @@
 firebase-debug.log
 
-# Cloudflare Pages 로컬 개발 파일
-.wrangler/
-.dev.vars
+# Vercel
+.vercel
+.env
+.env.local
