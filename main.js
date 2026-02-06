@@ -180,11 +180,18 @@ async function getDreamInterpretation(dreamText) {
     })
   });
 
-  if (!response.ok) {
-    throw new Error(`API 요청 실패: ${response.status}`);
-  }
-
   const data = await response.json();
+
+  if (!response.ok) {
+    // API 에러 상세 메시지 확인
+    var errorMsg = 'API 요청 실패: ' + response.status;
+    if (data && data.error && data.error.message) {
+      errorMsg += ' - ' + data.error.message;
+    } else if (data) {
+      errorMsg += ' - ' + JSON.stringify(data).substring(0, 200);
+    }
+    throw new Error(errorMsg);
+  }
 
   if (data.candidates &&
       data.candidates[0] &&
