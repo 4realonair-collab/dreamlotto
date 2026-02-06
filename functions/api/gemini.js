@@ -23,6 +23,9 @@ export async function onRequestPost(context) {
       status: response.status,
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
       },
     });
   } catch (error) {
@@ -30,6 +33,9 @@ export async function onRequestPost(context) {
       status: 500,
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
       },
     });
   }

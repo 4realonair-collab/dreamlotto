@@ -185,7 +185,12 @@ async function getDreamInterpretation(dreamText) {
 
   const data = await response.json();
 
-  if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+  if (data.candidates &&
+      data.candidates[0] &&
+      data.candidates[0].content &&
+      data.candidates[0].content.parts &&
+      data.candidates[0].content.parts[0] &&
+      data.candidates[0].content.parts[0].text) {
     return data.candidates[0].content.parts[0].text;
   }
 
@@ -226,14 +231,16 @@ function formatInterpretation(text) {
 // 로또 번호 파싱
 function parseLottoNumbers(lottoText) {
   lottoSets = [];
-  const setMatches = lottoText.matchAll(/(\d)세트[:\s]*([\d,\s]+)/g);
+  const setRegex = /(\d)세트[:\s]*([\d,\s]+)/g;
+  var match;
 
-  for (const match of setMatches) {
-    const numbersStr = match[2];
-    const numbers = numbersStr.match(/\d+/g)?.map(n => parseInt(n, 10)).slice(0, 6) || [];
+  while ((match = setRegex.exec(lottoText)) !== null) {
+    var numbersStr = match[2];
+    var numbersMatch = numbersStr.match(/\d+/g);
+    var numbers = numbersMatch ? numbersMatch.map(function(n) { return parseInt(n, 10); }).slice(0, 6) : [];
 
     if (numbers.length === 6) {
-      lottoSets.push(numbers.sort((a, b) => a - b));
+      lottoSets.push(numbers.sort(function(a, b) { return a - b; }));
     }
   }
 
