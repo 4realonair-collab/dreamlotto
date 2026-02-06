@@ -1,5 +1,5 @@
 // Cloudflare Pages Function 프록시 경로
-const PROXY_URL = '/api/gemini';
+const PROXY_URL = '/api/openai';
 
 // 상태 변수
 let isInterpreted = false;
@@ -168,15 +168,13 @@ async function getDreamInterpretation(dreamText) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      contents: [{
-        parts: [{
-          text: prompt
-        }]
+      model: 'gpt-4o-mini',
+      messages: [{
+        role: 'user',
+        content: prompt
       }],
-      generationConfig: {
-        temperature: 0.9,
-        maxOutputTokens: 2048,
-      }
+      temperature: 0.9,
+      max_tokens: 2048
     })
   });
 
@@ -193,13 +191,11 @@ async function getDreamInterpretation(dreamText) {
     throw new Error(errorMsg);
   }
 
-  if (data.candidates &&
-      data.candidates[0] &&
-      data.candidates[0].content &&
-      data.candidates[0].content.parts &&
-      data.candidates[0].content.parts[0] &&
-      data.candidates[0].content.parts[0].text) {
-    return data.candidates[0].content.parts[0].text;
+  if (data.choices &&
+      data.choices[0] &&
+      data.choices[0].message &&
+      data.choices[0].message.content) {
+    return data.choices[0].message.content;
   }
 
   throw new Error('응답 파싱 실패');
