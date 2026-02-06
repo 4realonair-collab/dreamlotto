@@ -100,7 +100,8 @@ interpretBtn.addEventListener('click', async () => {
 
   } catch (error) {
     console.error('해몽 오류:', error);
-    alert('해몽 중 오류가 발생했습니다. 다시 시도해주세요.');
+    // 디버깅용 상세 에러 메시지 (원인 파악 후 제거)
+    alert('[디버그] 오류: ' + (error.message || error.toString()) + '\n\n타입: ' + error.name);
   } finally {
     interpretBtn.disabled = false;
     loading.classList.add('hidden');
